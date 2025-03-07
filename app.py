@@ -135,7 +135,7 @@ def enviar_correo(nombre, email, mensaje):
         smtp_port = int(os.getenv("EMAIL_PORT"))
         smtp_user = os.getenv("EMAIL_USER")
         smtp_password = os.getenv("EMAIL_PASSWORD")
-        email_receiver = os.getenv("EMAIL_RECEIVER").split(", ")
+        email_receiver = [email.strip() for email in os.getenv("EMAIL_RECEIVER").split(",")]
 
         # Crear el mensaje
         msg = MIMEMultipart()
