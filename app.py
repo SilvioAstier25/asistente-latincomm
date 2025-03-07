@@ -3,6 +3,9 @@ import openai
 import os
 import requests
 from bs4 import BeautifulSoup
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -125,9 +128,41 @@ nombre = st.text_input("Nombre")
 email = st.text_input("Correo electrónico")
 mensaje = st.text_area("Mensaje")
 
+def enviar_correo(nombre, email, mensaje):
+    try:
+        # Configurar datos del email desde los secretos de Streamlit
+        smtp_host = os.getenv("EMAIL_HOST")
+        smtp_port = int(os.getenv("EMAIL_PORT"))
+        smtp_user = os.getenv("EMAIL_USER")
+        smtp_password = os.getenv("EMAIL_PASSWORD")
+        email_receiver = os.getenv("EMAIL_RECEIVER").split(", ")
+
+        # Crear el mensaje
+        msg = MIMEMultipart()
+        msg["From"] = smtp_user
+        msg["To"] = ", ".join(email_receiver)
+        msg["Subject"] = "Nuevo mensaje desde el asistente de Latincomm"
+        
+        body = f"Nombre: {nombre}\nCorreo: {email}\n\nMensaje:\n{mensaje}"
+        msg.attach(MIMEText(body, "plain"))
+
+        # Conectar con el servidor SMTP
+        server = smtplib.SMTP(smtp_host, smtp_port)
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_user, email_receiver, msg.as_string())
+        server.quit()
+
+        return True
+    except Exception as e:
+        print("Error al enviar correo:", e)
+        return False
+
 if st.button("Enviar mensaje"):
     if nombre and email and mensaje:
-        st.write("✅ Tu mensaje ha sido enviado correctamente.")
-        # Aquí se debería configurar el envío de correo a info@latincomm.com, lrivet@latincomm.com y jdominguez@latincomm.com
+        if enviar_correo(nombre, email, mensaje):
+            st.success("✅ Tu mensaje ha sido enviado correctamente.")
+        else:
+            st.error("❌ Error al enviar el mensaje. Inténtalo de nuevo.")
     else:
-        st.write("⚠️ Por favor, completa todos los campos.")
+        st.warning("⚠️ Por favor, completa todos los campos.")
