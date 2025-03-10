@@ -17,14 +17,26 @@ import os
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Detectar el modo oscuro con Streamlit
-modo_oscuro = st.checkbox("Activar modo oscuro")
-
-# Mostrar el logo correcto según el modo seleccionado
-if modo_oscuro:
-    st.image(logo_blanco, width=200)
-else:
-    st.image(logo_color, width=200)
+# Inyectar JavaScript para detectar el modo oscuro
+st.markdown(
+    f"""
+    <script>
+        function setLogo() {{
+            var logo = document.getElementById("logo-img");
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
+                logo.src = "{logo_blanco}";
+            }} else {{
+                logo.src = "{logo_color}";
+            }}
+        }}
+        setLogo();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setLogo);
+    </script>
+    <div style="text-align: center;">
+        <img id="logo-img" src="{logo_color}" width="200">
+    </div>
+    """,
+    unsafe_allow_html=True
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
