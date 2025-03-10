@@ -14,33 +14,32 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Comprobar si los archivos existen en el directorio de Streamlit
-if os.path.exists(logo_color) and os.path.exists(logo_blanco):
+# Detectar si los archivos existen (para evitar errores)
+if not os.path.exists(logo_color) or not os.path.exists(logo_blanco):
+    st.error("❌ No se encontró el logotipo. Verifica los archivos.")
+else:
+    # Mostrar logotipo en función del modo claro/oscuro
     st.markdown(
-        f"""
-        <style>
-            @media (prefers-color-scheme: dark) {{
-                .logo-container img {{
-                    content: url({logo_blanco});
-                }}
-            }}
-            @media (prefers-color-scheme: light) {{
-                .logo-container img {{
-                    content: url({logo_color});
-                }}
-            }}
-            .logo-container {{
-                text-align: center;
-            }}
-        </style>
-        <div class="logo-container">
-            <img src="{logo_color}" width="200">
+        """
+        <script>
+        function setLogo() {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const logo = document.getElementById('logo-img');
+            if (prefersDark) {
+                logo.src = 'Logo_LatinComm_blanco.png';
+            } else {
+                logo.src = 'Logo_LatinComm_color.png';
+            }
+        }
+        window.onload = setLogo;
+        window.matchMedia('(prefers-color-scheme: dark)').addListener(setLogo);
+        </script>
+        <div style="text-align: center;">
+            <img id="logo-img" src="Logo_LatinComm_color.png" width="200">
         </div>
         """,
         unsafe_allow_html=True
     )
-else:
-    st.error("❌ No se encontró el logotipo. Verifica los archivos.")
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
