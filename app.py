@@ -45,7 +45,7 @@ st.markdown(
         }}
     </style>
     <div class="logo-container">
-        <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
+        <img id="logo-img" src="{logo_color}" alt="Logo_LatinComm">
     </div>
     """,
     unsafe_allow_html=True
