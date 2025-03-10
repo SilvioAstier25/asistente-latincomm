@@ -10,36 +10,32 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Definir las rutas de los logotipos
-logo_color = "Logo_LatinComm_color.png"
-logo_blanco = "Logo_LatinComm_blanco.png"
+# URLs de los logos alojados externamente (reemplaza con tus URLs)
+logo_color_url = "https://imgur.com/a/VvQBPbr"
+logo_blanco_url = "https://imgur.com/a/TqYEY4f"
 
-# Detectar si los archivos existen (para evitar errores)
-if not os.path.exists(logo_color) or not os.path.exists(logo_blanco):
-    st.error("❌ No se encontró el logotipo. Verifica los archivos.")
-else:
-    # Mostrar logotipo en función del modo claro/oscuro
-    st.markdown(
-        """
-        <script>
-        function setLogo() {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const logo = document.getElementById('logo-img');
-            if (prefersDark) {
-                logo.src = 'Logo_LatinComm_blanco.png';
-            } else {
-                logo.src = 'Logo_LatinComm_color.png';
-            }
-        }
-        window.onload = setLogo;
-        window.matchMedia('(prefers-color-scheme: dark)').addListener(setLogo);
-        </script>
-        <div style="text-align: center;">
-            <img id="logo-img" src="Logo_LatinComm_color.png" width="200">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# Detección de tema oscuro y carga del logo correcto
+st.markdown(
+    f"""
+    <script>
+    function setLogo() {{
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const logo = document.getElementById('logo-img');
+        if (prefersDark) {{
+            logo.src = '{logo_blanco_url}';
+        }} else {{
+            logo.src = '{logo_color_url}';
+        }}
+    }}
+    window.onload = setLogo;
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(setLogo);
+    </script>
+    <div style="text-align: center;">
+        <img id="logo-img" src="{logo_color_url}" width="200">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
