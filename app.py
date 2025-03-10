@@ -10,15 +10,46 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# URLs de los logos alojados externamente (reemplaza con tus URLs)
-logo_color_url = "https://imgur.com/a/VvQBPbr"
-logo_blanco_url = "https://imgur.com/a/TqYEY4f"
+import streamlit as st
+import os
 
-st.markdown("## Verificación de Logotipos")
+# Definir las rutas de los logotipos
+logo_color = "Logo_LatinComm_color.png"
+logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Insertar imágenes directamente
-st.image(logo_color_url, caption="Logo en modo claro", width=200)
-st.image(logo_blanco_url, caption="Logo en modo oscuro", width=200)
+# Inyectar CSS y JavaScript para detectar el modo oscuro
+st.markdown(
+    f"""
+    <style>
+        /* Establecer ID para la imagen del logo */
+        .logo-container {{
+            text-align: center;
+        }}
+
+        #logo-img {{
+            width: 200px;
+        }}
+
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {{
+            #logo-img {{
+                content: url('{logo_blanco}');
+            }}
+        }}
+
+        /* Modo claro */
+        @media (prefers-color-scheme: light) {{
+            #logo-img {{
+                content: url('{logo_color}');
+            }}
+        }}
+    </style>
+    <div class="logo-container">
+        <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
