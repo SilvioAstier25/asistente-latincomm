@@ -10,43 +10,18 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Definir las rutas de los logotipos
+# Cargar los logotipos
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Aplicar estilos CSS para cambiar la imagen automáticamente según el modo del sistema
-st.markdown(
-    f"""
-    <style>
-        .logo-container {{
-            text-align: center;
-            margin-bottom: 20px;
-        }}
+# Obtener la preferencia de tema de Streamlit
+theme = st.get_option("theme.base")
 
-        #logo-img {{
-            width: 200px;
-        }}
-
-        /* Modo oscuro */
-        @media (prefers-color-scheme: dark) {{
-            #logo-img {{
-                content: url({logo_blanco});
-            }}
-        }}
-
-        /* Modo claro */
-        @media (prefers-color-scheme: light) {{
-            #logo-img {{
-                content: url({logo_color});
-            }}
-        }}
-    </style>
-    <div class="logo-container">
-        <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Mostrar el logo según el modo oscuro o claro
+if theme == "dark":
+    st.image(logo_blanco, width=200)
+else:
+    st.image(logo_color, width=200)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
