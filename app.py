@@ -10,15 +10,15 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Cargar los logotipos
+# Definir las rutas de los logotipos
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Obtener la preferencia de tema de Streamlit
-theme = st.get_option("theme.base")
+# Detectar el modo oscuro con Streamlit
+modo_oscuro = st.checkbox("Activar modo oscuro")
 
-# Mostrar el logo según el modo oscuro o claro
-if theme == "dark":
+# Mostrar el logo correcto según el modo seleccionado
+if modo_oscuro:
     st.image(logo_blanco, width=200)
 else:
     st.image(logo_color, width=200)
