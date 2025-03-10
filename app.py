@@ -10,33 +10,31 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-import streamlit as st
-import os
-
-# Definir las rutas de los logotipos
+# Rutas de los logotipos
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Inyectar JavaScript para detectar el modo oscuro
+# Código JavaScript para detectar el modo oscuro y cambiar la imagen dinámicamente
 st.markdown(
-    f"""
+    """
     <script>
-        function setLogo() {{
+        function setLogo() {
             var logo = document.getElementById("logo-img");
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
-                logo.src = "{logo_blanco}";
-            }} else {{
-                logo.src = "{logo_color}";
-            }}
-        }}
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                logo.src = 'Logo_LatinComm_blanco.png';
+            } else {
+                logo.src = 'Logo_LatinComm_color.png';
+            }
+        }
         setLogo();
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setLogo);
     </script>
     <div style="text-align: center;">
-        <img id="logo-img" src="{logo_color}" width="200">
+        <img id="logo-img" src="Logo_LatinComm_color.png" width="200">
     </div>
     """,
     unsafe_allow_html=True
+)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
