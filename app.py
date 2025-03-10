@@ -10,8 +10,37 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Cargar el logotipo de Latincomm
-st.image("Logo LatinComm color.png", width=200)
+# Definir las rutas de los logotipos
+logo_color = "Logo_LatinComm_color.png"  # Asegúrate de que este archivo ya esté subido
+logo_blanco = "Logo_LatinComm_blanco.png"  # Sube este archivo con el logo en blanco
+
+# Inyectar CSS y JavaScript para detectar el modo oscuro
+st.markdown(
+    f"""
+    <style>
+        /* Establecer ID para la imagen del logo */
+        #logo-img {{
+            width: 200px;
+        }}
+
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {{
+            #logo-img {{
+                content: url({logo_blanco});
+            }}
+        }}
+
+        /* Modo claro */
+        @media (prefers-color-scheme: light) {{
+            #logo-img {{
+                content: url({logo_color});
+            }}
+        }}
+    </style>
+    <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
+    """,
+    unsafe_allow_html=True
+)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
