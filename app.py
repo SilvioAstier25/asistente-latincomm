@@ -11,36 +11,36 @@ from email.mime.multipart import MIMEMultipart
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Definir las rutas de los logotipos
-logo_color = "Logo_LatinComm_color.png"  # Asegúrate de que este archivo ya esté subido
-logo_blanco = "Logo_LatinComm_blanco.png"  # Sube este archivo con el logo en blanco
+logo_color = "Logo_LatinComm_color.png"
+logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Inyectar CSS y JavaScript para detectar el modo oscuro
-st.markdown(
-    f"""
-    <style>
-        /* Establecer ID para la imagen del logo */
-        #logo-img {{
-            width: 200px;
-        }}
-
-        /* Modo oscuro */
-        @media (prefers-color-scheme: dark) {{
-            #logo-img {{
-                content: url({logo_blanco});
+# Comprobar si los archivos existen en el directorio de Streamlit
+if os.path.exists(logo_color) and os.path.exists(logo_blanco):
+    st.markdown(
+        f"""
+        <style>
+            @media (prefers-color-scheme: dark) {{
+                .logo-container img {{
+                    content: url({logo_blanco});
+                }}
             }}
-        }}
-
-        /* Modo claro */
-        @media (prefers-color-scheme: light) {{
-            #logo-img {{
-                content: url({logo_color});
+            @media (prefers-color-scheme: light) {{
+                .logo-container img {{
+                    content: url({logo_color});
+                }}
             }}
-        }}
-    </style>
-    <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
-    """,
-    unsafe_allow_html=True
-)
+            .logo-container {{
+                text-align: center;
+            }}
+        </style>
+        <div class="logo-container">
+            <img src="{logo_color}" width="200">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.error("❌ No se encontró el logotipo. Verifica los archivos.")
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
