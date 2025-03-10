@@ -23,6 +23,9 @@ if modo_oscuro:
 else:
     st.image(logo_color, width=200)
 
+# 📌 Agregar título del asistente
+st.markdown("# Asistente Virtual Latincomm")
+
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
     "eComm": {
