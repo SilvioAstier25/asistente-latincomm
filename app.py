@@ -14,28 +14,11 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 logo_color_url = "https://imgur.com/a/VvQBPbr"
 logo_blanco_url = "https://imgur.com/a/TqYEY4f"
 
-# Detección de tema oscuro y carga del logo correcto
-st.markdown(
-    f"""
-    <script>
-    function setLogo() {{
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const logo = document.getElementById('logo-img');
-        if (prefersDark) {{
-            logo.src = '{logo_blanco_url}';
-        }} else {{
-            logo.src = '{logo_color_url}';
-        }}
-    }}
-    window.onload = setLogo;
-    window.matchMedia('(prefers-color-scheme: dark)').addListener(setLogo);
-    </script>
-    <div style="text-align: center;">
-        <img id="logo-img" src="{logo_color_url}" width="200">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("## Verificación de Logotipos")
+
+# Insertar imágenes directamente
+st.image(logo_color_url, caption="Logo en modo claro", width=200)
+st.image(logo_blanco_url, caption="Logo en modo oscuro", width=200)
 
 # 📌 Definir los servicios antes de que el asistente IA los use
 servicios = {
