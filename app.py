@@ -10,27 +10,39 @@ from email.mime.multipart import MIMEMultipart
 # Configurar la clave de API de OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Rutas de los logotipos
+# Definir las rutas de los logotipos
 logo_color = "Logo_LatinComm_color.png"
 logo_blanco = "Logo_LatinComm_blanco.png"
 
-# Código JavaScript para detectar el modo oscuro y cambiar la imagen dinámicamente
+# Aplicar estilos CSS para cambiar la imagen automáticamente según el modo del sistema
 st.markdown(
-    """
-    <script>
-        function setLogo() {
-            var logo = document.getElementById("logo-img");
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                logo.src = 'Logo_LatinComm_blanco.png';
-            } else {
-                logo.src = 'Logo_LatinComm_color.png';
-            }
-        }
-        setLogo();
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setLogo);
-    </script>
-    <div style="text-align: center;">
-        <img id="logo-img" src="Logo_LatinComm_color.png" width="200">
+    f"""
+    <style>
+        .logo-container {{
+            text-align: center;
+            margin-bottom: 20px;
+        }}
+
+        #logo-img {{
+            width: 200px;
+        }}
+
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {{
+            #logo-img {{
+                content: url({logo_blanco});
+            }}
+        }}
+
+        /* Modo claro */
+        @media (prefers-color-scheme: light) {{
+            #logo-img {{
+                content: url({logo_color});
+            }}
+        }}
+    </style>
+    <div class="logo-container">
+        <img id="logo-img" src="{logo_color}" alt="Latincomm Logo">
     </div>
     """,
     unsafe_allow_html=True
